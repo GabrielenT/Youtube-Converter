@@ -16,12 +16,15 @@ welcome = tk.Label(
     height=2
 )
 linkRequestLabel = Label(text="Link to the Youtube video:")
-mediaTypeLabel = Label(text="Selec the type:")
-qualityTypeLabel = Label(text="Select quality:")
-userInput = tk.Entry(app, fg="black", bg="gray70", width='50')
+mediaTypeLabel = Label(text="Select media type:")
+qualityTypeLabel = Label(text="Select video quality:")
+link = StringVar()
+userInput = Entry(app, textvariable=link)
+
 mediaSelected = StringVar()
 mediaCombo = Combobox(app, textvariable=mediaSelected)
 mediaCombo['values'] = mediaTypes
+
 qualitySelected = StringVar()
 qualityCombo = Combobox(app, textvariable=qualitySelected)
 qualityCombo['values'] = qualitySelection
@@ -33,8 +36,15 @@ for x in mediaTypes:
 
 
 def convert():
-    link = userInput.get()
-    # implement code to execute the conversion
+    yt = YouTube(link.get())
+    if mediaSelected.get() == "mp3":
+        yt.streams.filter(only_audio=True).first().download(filename=f"{yt.title}.mp3")
+
+    if mediaSelected.get() == "mp4":
+        pass
+        #implement mp4 download
+
+
 convertButton = Button(app, text = "Convert", command=convert)
 
 welcome.pack()
